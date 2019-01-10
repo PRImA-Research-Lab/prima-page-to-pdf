@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 PRImA Research Lab, University of Salford, United Kingdom
+ * Copyright 2019 PRImA Research Lab, University of Salford, United Kingdom
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,14 +31,14 @@ public class PageToPdfConverterTest {
 	public void test() {
 
 		try {
-			Page page = PageXmlInputOutput.readPage("e:\\temp\\debug\\00000259.xml");
+			Page page = PageXmlInputOutput.readPage("d:\\temp\\debug\\00000259.xml");
 			//Page page = new Page();
 			
 			PageToPdfConverter converter = new PageToPdfConverter(LowLevelTextType.TextLine,
 																	true, false, true, false);
-			converter.setFontFilePath("e:\\temp\\debug\\AletheiaSans.ttf");
+			converter.setFontFilePath("d:\\temp\\debug\\AletheiaSans.ttf");
 			
-			converter.convert(page, "e:\\temp\\debug\\00000259.png", "e:\\temp\\debug\\PdfFromPage.pdf");
+			converter.convert(page, "d:\\temp\\debug\\00000259.png", "d:\\temp\\debug\\PdfFromPage.pdf");
 		} catch(Exception exc) {
 			exc.printStackTrace();
 			fail();
@@ -53,17 +53,17 @@ public class PageToPdfConverterTest {
 			
 			PageToPdfConverter converter = new PageToPdfConverter(LowLevelTextType.TextLine,
 																	true, false, true, false);
-			converter.setFontFilePath("e:\\temp\\debug\\AletheiaSans.ttf");
+			converter.setFontFilePath("d:\\temp\\debug\\AletheiaSans.ttf");
 			
 			List<Page> pages = new ArrayList<Page>();  
-			pages.add(PageXmlInputOutput.readPage("e:\\temp\\debug\\00000259.xml"));
-			pages.add(PageXmlInputOutput.readPage("e:\\temp\\debug\\00000086.xml"));
+			pages.add(PageXmlInputOutput.readPage("d:\\temp\\debug\\00000259.xml"));
+			pages.add(PageXmlInputOutput.readPage("d:\\temp\\debug\\00000086.xml"));
 			
 			List<String> images = new ArrayList<String>();
-			images.add("e:\\temp\\debug\\00000259.png");
-			images.add("e:\\temp\\debug\\00000086.png");
+			images.add("d:\\temp\\debug\\00000259.png");
+			images.add("d:\\temp\\debug\\00000086.png");
 			
-			converter.convert(pages, images, "e:\\temp\\debug\\PdfFromPages.pdf");
+			converter.convert(pages, images, "d:\\temp\\debug\\PdfFromPages.pdf");
 		} catch(Exception exc) {
 			exc.printStackTrace();
 			fail();
