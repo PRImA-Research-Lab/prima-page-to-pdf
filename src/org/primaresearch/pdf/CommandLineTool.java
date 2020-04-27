@@ -88,7 +88,7 @@ public class CommandLineTool {
 				textSource = textSource.toLowerCase();
 				if (textSource.equals("r"))
 					textSourceType = RegionType.TextRegion;
-				else if (textSource.equals("l"))
+				else if (textSource.equals("l") || textSource.equals("t"))
 					textSourceType = LowLevelTextType.TextLine;
 				else if (textSource.equals("w"))
 					textSourceType = LowLevelTextType.Word;
@@ -104,7 +104,7 @@ public class CommandLineTool {
 			if (outlines != null) {
 				outlines = outlines.toLowerCase();
 				addRegionOutlines = outlines.contains("r");
-				addTextLineOutlines = outlines.contains("l");
+				addTextLineOutlines = outlines.contains("l") || outlines.contains("t");
 				addWordOutlines = outlines.contains("w");
 				addGlyphOutlines = outlines.contains("g");
 			}
@@ -154,15 +154,15 @@ public class CommandLineTool {
 				List<Page> pages = new ArrayList<Page>();
 				List<String> images = new ArrayList<String>();
 				for (File f : xmlFiles) {
-					pages.add(PageXmlInputOutput.readPage(f.getAbsolutePath()));
 					//Image
 					String path = imageSource + File.separator + f.getName();
-					if (new File(path.toLowerCase().replace(".xml", ".tif")).exists())
-						images.add(path.substring(0, path.length()-4) + ".tif");
-					else if (new File(path.toLowerCase().replace(".xml", ".png")).exists())
-						images.add(path.substring(0, path.length()-4) + ".png");
-					else if (new File(path.toLowerCase().replace(".xml", ".jpg")).exists())
-						images.add(path.substring(0, path.length()-4) + ".jpg");
+					String imageFilePath = findImage(path.substring(0, path.length()-3));
+					if (imageFilePath != null) {
+						pages.add(PageXmlInputOutput.readPage(f.getAbsolutePath()));
+						images.add(imageFilePath);
+					} else {
+						System.err.println("Image not found for: " + f.getAbsolutePath());
+					}
 				}
 				
 				converter.convert(pages, images, pdfFilename);
@@ -177,6 +177,16 @@ public class CommandLineTool {
 		} catch(Exception exc) {
 			exc.printStackTrace();
 		}
+	}
+	
+	private static String findImage(String baseFilePath) {
+		String[] extensions = new String[] {"tif", "tiff", "png", "jpg", "jpeg"};
+		for (String extension : extensions) {
+			String filePath = baseFilePath + extension;
+			if (new File(filePath).exists())
+				return filePath;
+		}
+		return null;
 	}
 
 	/**
